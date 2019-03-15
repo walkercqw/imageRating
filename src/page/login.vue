@@ -8,7 +8,7 @@
       </div>
       <div class="login-btn" @click="login">登录</div>
       <div class="login-autoLogin" @click="autoLogin">
-        <input type="checkbox" :checked="isAutoLogin"><span>下次自动登录</span>
+        <input type="checkbox" :checked="isAutoLogin" id="checkbox"><span>下次自动登录</span>
       </div>
       
     </div>
@@ -36,14 +36,14 @@ export default {
         return;
       }
       if(this.isAutoLogin){
-        localStorage.setItem("userInfo",{name:this.userName,pwd:this.pwd})
+        localStorage.setItem("userInfo",JSON.stringify({name:this.userName,pwd:this.pwd}))
       }
       console.log(this.userName)
       console.log(this.pwd)
     }
   },
   created(){
-    const userInfo = localStorage.getItem('userInfo')
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     if(userInfo){
       this.userName = userInfo.name
       this.pwd = userInfo.pwd

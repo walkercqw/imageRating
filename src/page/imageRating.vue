@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="imageRating">
     <h1>图片评分</h1>
   </div>
 </template>
@@ -13,5 +13,9 @@ export default {
 }
 </script>
 <style lang="css" scoped>
-  
+  .imageRating{
+    height: 100%;
+    width:100%;
+    background-color: #ccc;
+  }
 </style>
