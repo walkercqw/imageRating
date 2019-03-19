@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import {login,hasToken} from "../service/getData.js"
+import {login} from "../service/getData.js"
 import tipBox from '../tool/tipBox.js';
 export default {
   name: 'login',

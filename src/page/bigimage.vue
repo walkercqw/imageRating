@@ -214,6 +214,7 @@ import { formatDate } from "../module/date";
 import { isMobile } from "../module/util.js";
 import "../plugins/animation.js";
 import { setTimeout } from 'timers';
+import tipBox from "../tool/tipBox.js"
 export default {
     name: "bigImage",
     props: {
@@ -320,7 +321,8 @@ export default {
         that.$emit(
             "changeBigImage",
             that.gallery.getCurrentIndex(),
-            that.gallery.options.getNumItemsFn()
+            that.gallery.options.getNumItemsFn(),
+            console.log("打开页面了")
         );
         //翻页前
         that.gallery.listen("beforeChange", function() {
