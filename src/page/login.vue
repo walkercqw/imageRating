@@ -17,6 +17,8 @@
 </template>
 
 <script>
+import {login,hasToken} from "../service/getData.js"
+import tipBox from '../tool/tipBox.js';
 export default {
   name: 'login',
   data () {
@@ -38,8 +40,16 @@ export default {
       if(this.isAutoLogin){
         localStorage.setItem("userInfo",JSON.stringify({name:this.userName,pwd:this.pwd}))
       }
-      console.log(this.userName)
-      console.log(this.pwd)
+      login(this.userName,this.pwd).then(res => {
+        if(res.data.status == 200){
+          console.log(res)
+          tipBox("登陆成功")
+          localStorage.setItem("user",JSON.stringify(res.data.data))
+          this.$router.push({name:"imageRating"})
+        } else {
+          tipBox(`登录失败，${res.data.msg}`)
+        }
+      })
     }
   },
   created(){

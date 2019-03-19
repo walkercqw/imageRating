@@ -22,6 +22,6 @@ export default new Router({
       path:'/imageRating',
       name:'imageRating',
       component:imageRating
-    }
+    },
   ]
 })
