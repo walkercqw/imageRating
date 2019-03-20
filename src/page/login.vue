@@ -8,7 +8,7 @@
       </div>
       <div class="login-btn" @click="login">登录</div>
       <div class="login-autoLogin" @click="autoLogin">
-        <input type="checkbox" :checked="isAutoLogin" id="checkbox"><span>下次自动登录</span>
+        <input type="checkbox" :checked="isAutoLogin" id="checkbox"><span>记住密码</span>
       </div>
       
     </div>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import {login} from "../service/getData.js"
+import {login, hasToken} from "../service/getData.js"
 import tipBox from '../tool/tipBox.js';
 export default {
   name: 'login',
@@ -42,7 +42,6 @@ export default {
       }
       login(this.userName,this.pwd).then(res => {
         if(res.data.status == 200){
-          console.log(res)
           tipBox("登陆成功")
           localStorage.setItem("user",JSON.stringify(res.data.data))
           this.$router.push({name:"imageRating"})
@@ -53,6 +52,7 @@ export default {
     }
   },
   created(){
+    this.token = localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")).token:''
     const userInfo = JSON.parse(localStorage.getItem('userInfo'))
     if(userInfo){
       this.userName = userInfo.name

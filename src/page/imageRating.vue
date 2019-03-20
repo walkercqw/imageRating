@@ -2,16 +2,23 @@
   <div class="imageRating">
     <div class="imageRating-title">
       <div class="imageRating-title-nickname">
-        <!-- <p>昵称:{{user.nickname}}</p> -->
+        <p>昵称:{{user.nickname}}</p>
       </div>
+      <a href="#" @click="goOut">退出登录</a>
     </div>
     <div v-for="(item,i) in dataList" :key="i" class="imageRating-imagebox" v-show="i == showCount">
       <img :src="item.src" alt="" @click="openBigImage(i)">
     </div>
+    <div class="imageRating-imagebox" v-show="showCount == -1">
+
+    </div>
     <div class="imageRating-footer">
       <p>分值可选</p>
       <ul>
-        <li v-for="(item,i) in countList" :key="item" @mousedown="getit(i)" @click="send" :class="{'active':i == get}">
+        <li v-for="(item,i) in countList" :key="item" 
+        @mousedown="getit(i)"
+        @mouseup="unget(i)" 
+        :class="{'active':i == get}">
           {{item}}
         </li>
       </ul>
@@ -22,9 +29,6 @@
         :data="dataList"
         @closeBigImage="closeBigImage" 
         :index="bigImageIndex"
-        :openBottomFont="false"
-        :isEndLoading='true'
-        
         >
     </big-image>
   </div>
@@ -33,6 +37,7 @@
 import bigImage from "./bigimage.vue"
 import bigImgParse from "../tool/bigImg.js"
 import tipBox from "../tool/tipBox.js"
+import { getImageList,sendScore,hasToken } from "../service/getData.js"
 export default {
   data() {
     return {
@@ -42,24 +47,8 @@ export default {
       get:-1,
       count:0,
       firstSend:1,
-      dataList: [
-        {
-            src: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2097445550,1113719468&fm=200&gp=0.jpg',
-            msrc:'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2097445550,1113719468&fm=200&gp=0.jpg',
-            w: 1200,
-            h: 900
-        },
-        {
-            src: 'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3668554427,3084213941&fm=200&gp=0.jpg',
-            w: 600,
-            h: 400
-        }
-      ],
-      imageList:[
-        "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=2097445550,1113719468&fm=200&gp=0.jpg",
-        "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3668554427,3084213941&fm=200&gp=0.jpg"
-      ],
-      showCount:0,
+      dataList: [],
+      showCount:-1,
       user:'',
       isOpenBigImage: false,
       bigImgData:[],
@@ -67,12 +56,23 @@ export default {
     };
   },
   created(){
-    // this.user = JSON.parse(localStorage.getItem("user"))
-    // console.log(this.user)
-    // if(!this.user){
-    //   tipBox("请重新登录")
-    //   this.$router.push({name:"login"})
-    // }
+    this.user = JSON.parse(localStorage.getItem("user"))
+    if(!this.user){
+      tipBox("请重新登录")
+      this.$router.push({name:"login"})
+    }
+    getImageList(10).then(res => {
+      if(res.status == 200){
+        this.showCount = 0
+        this.dataList = res.data.data
+        if(this.dataList == ''){
+          tipBox("已经任务完成，已经没有图片啦")
+          this.showCount = -1
+        }
+      } else {
+        tipBox("请求错误")
+      }
+    })
   },
   mounted(){
     document.onkeyup = () => {
@@ -81,6 +81,11 @@ export default {
     }
     document.onkeydown =  (event) => {
       if(this.isOpenBigImage){
+        return;
+      } 
+      if(this.dataList == ""){
+        tipBox('任务完成，已经没有图片啦')
+        this.showCount = -1
         return;
       }
         var e = event || window.event;
@@ -160,9 +165,9 @@ export default {
     }; 
   },
   methods:{
-    toggleBottomImg(index){
-            this.bigIndex = index;
-        },
+    goOut(){
+      this.$router.push({name:'login'})
+    },
     openBigImage(i){
       this.isOpenBigImage = true
       this.bigImageIndex = i
@@ -174,16 +179,36 @@ export default {
       this.get = i
       this.count = i
     },
-    send(){
-      if(this.showCount == this.imageList.length - 1){
-        this.showCount = 0;
-      } else {
-        this.showCount++
+    unget(){
+      if(this.dataList == ""){
+        tipBox("任务完成，已经没有图片啦")
+        this.showCount = -1
+        return;
       }
-      this.get = this.count
-      this.oneShow = !this.oneShow
-      this.twoShow = !this.twoShow
-      tipBox(`评论成功，当前分数为${this.count}`)
+      this.send()
+      this.get = -1
+    },
+    send(){
+      sendScore(this.dataList[this.showCount].id,this.count).then(res => {
+        if(res.status == 200){
+          tipBox(`打分成功，当前分数为${this.count}`)
+          if(this.showCount == this.dataList.length - 1){
+            getImageList(10).then(res => {
+              if(res.status == 200){
+                this.dataList = res.data.data
+              } else {
+                tipBox("请求错误")
+              }
+            })
+            this.showCount = 0;
+          } else {
+            this.showCount++
+          }
+          this.get = this.count
+        } else {
+          tipBox("打分失败")
+        } 
+      })
     }
   },
   components:{
@@ -201,6 +226,15 @@ export default {
       height: 5vh;
       background-color: rgba(0,0,0,.5);
       margin-bottom: 10px;
+      a{
+          color: #fff;
+          float: right;
+          margin: -30px 300px;
+          &:hover{
+            color: skyblue;
+          }
+        }
+        
       &-nickname{
         margin-left: 200px;
         p{
@@ -229,11 +263,12 @@ export default {
       height: 13.9vh;
       color:#fff;
       p{
+        text-align: center;
         margin: 0 200px;
       }
       ul{
         list-style: none;
-        width: 60%;
+        width: 30%;
         margin: 0 auto;
         display:flex;
         justify-content: space-around;
