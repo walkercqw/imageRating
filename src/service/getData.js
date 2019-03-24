@@ -18,4 +18,4 @@ export const hasToken = () => axios.get("/verify")
 //获取图片列表
 export const getImageList = (amount) => axios.get(`/img/list?count=${amount}`)
 //打分
-export const sendScore = (pid,score) => axios.post('/img/grade',{pid,score})
+export const sendScore = (pid,score,isBeforeRetouch,img_number_id) => axios.post('/img/grade',{pid,score,isBeforeRetouch,img_number_id})

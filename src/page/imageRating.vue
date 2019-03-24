@@ -6,9 +6,6 @@
       </div>
       <a href="#" @click="goOut">退出登录</a>
     </div>
-    <div v-for="(item,i) in dataList" :key="i" class="imageRating-imagebox" v-show="i == showCount">
-      <img :src="item.src" alt="" @click="openBigImage(i)">
-    </div>
     <div class="imageRating-imagebox" v-show="showCount == -1">
 
     </div>
@@ -23,13 +20,7 @@
         </li>
       </ul>
     </div>
-    <big-image 
-        v-if="isOpenBigImage"
-        :isOpenBigImage="isOpenBigImage"
-        :data="dataList"
-        @closeBigImage="closeBigImage" 
-        :index="bigImageIndex"
-        >
+    <big-image>
     </big-image>
   </div>
 </template>
@@ -226,6 +217,8 @@ export default {
       height: 5vh;
       background-color: rgba(0,0,0,.5);
       margin-bottom: 10px;
+      position: relative;
+      z-index: 999;
       a{
           color: #fff;
           float: right;
