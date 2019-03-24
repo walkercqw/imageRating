@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import login from '@/page/login'
-import imageRating from '@/pages/imageRating'
+import imageRating from '@/page/imageRating'
 
 
 Vue.use(Router)
