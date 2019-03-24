@@ -246,10 +246,11 @@ export default {
 .imageRating{
     &-footer{
       box-sizing: border-box;
+      background-color: black;
       height: 13.9vh;
       color:#fff;
       position: relative;
-      top:803px;
+      top:813px;
       z-index: 9999;
       p{
         text-align: center;
@@ -279,5 +280,6 @@ export default {
 }
 .pswp__img{
   padding-bottom:130px;
+  overflow: hidden;
 }
 </style>

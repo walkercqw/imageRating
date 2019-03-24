@@ -129,7 +129,7 @@ created(){
       }
     }
     &-box{
-        height: 80vh;
+        height: 100vh;
         width: 100%;
     }
     
