@@ -93,18 +93,23 @@ export default {
             countList:[0,1,2,3,4,5,6,7,8,9],
             get:-1,
             count:0,
-          
+            firstSend:true,
 
         }
     },
     created(){
     },
     mounted(){
-        document.onkeyup = () => {
-          this.get = -1
+        document.onkeydown = (event) => {
+          var e = event || window.event
+          if(e.keyCode > 58) {
+            this.get = e.keyCode - 96
+          } else {
+            this.get = e.keyCode - 48
+          }
+          this.firstSend = true
         }
-        document.onkeydown =  (event) => {
-        
+        document.onkeyup =  (event) => {
           if(this.dataList == ""){
             tipBox('任务完成，已经没有图片啦')
             return;
@@ -114,7 +119,7 @@ export default {
               case 48:
               case 96:
                 this.count = 0
-                this.get = 0
+                this.get = 0              
                 this.send()
                 break;
               case 49:

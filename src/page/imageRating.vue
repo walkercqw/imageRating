@@ -42,6 +42,7 @@ created(){
       tipBox("请重新登录")
       this.$router.push({name:"login"})
     }
+    
     getImageList(1).then(res => {
       if(res.status == 200){
         this.showCount = 0
@@ -49,9 +50,6 @@ created(){
         this.dataList[0].h = this.photo[0].h
         this.dataList[0].w = this.photo[0].w
         this.dataList[0].src = this.photo[0].src
-        console.log("获取开始")
-        console.log(this.dataList)
-        console.log("获取完成")
         this.open = true
         if(this.dataList == ''){
           tipBox("已经任务完成，已经没有图片啦")
@@ -76,14 +74,11 @@ created(){
             tipBox(`打分成功，当前分数为${count}`)
             getImageList(1).then(res => {
               if(res.status == 200){
-                console.log("重新赋值开始")
                 this.photo = res.data.data
                 this.dataList[0].h = this.photo[0].h
                 this.dataList[0].w = this.photo[0].w
                 this.dataList[0].src = this.photo[0].src
-                console.log(this.dataList)
                 this.open = true
-                console.log("重新赋值结束")
               } else {
                 tipBox("请求错误")
               }

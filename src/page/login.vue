@@ -3,8 +3,8 @@
     <div class="login-contain">
       <h1>喔图图片打分</h1>
       <div class="login-box">
-        <p><span>账号:</span><input type="text" v-model="userName"></p>
-        <p><span>密码:</span><input type="password" v-model="pwd"></p>
+        <p><span>账号:</span><input type="text" v-model="userName" @keydown.enter="login"></p>
+        <p><span>密码:</span><input type="password" v-model="pwd" @keydown.enter="login"></p>
       </div>
       <div class="login-btn" @click="login">登录</div>
       <div class="login-autoLogin" @click="autoLogin">
@@ -44,6 +44,8 @@ export default {
         if(res.data.status == 200){
           tipBox("登陆成功")
           localStorage.setItem("user",JSON.stringify(res.data.data))
+          let token = localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")).token:''
+          console.log(token)
           this.$router.push({name:"imageRating"})
         } else {
           tipBox(`登录失败，${res.data.msg}`)

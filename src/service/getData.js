@@ -4,6 +4,9 @@ let token = localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")
 axios.defaults.baseURL = 'http://192.168.10.64:3000/api';
 axios.interceptors.request.use(function (config) {
     config.data = Qs.stringify(config.data)
+    if(!token) {
+      token = localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")).token:''
+    }
     if(token){
         config.headers['Authorization'] = "Bearer " + token
     } 
