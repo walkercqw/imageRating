@@ -1,4 +1,5 @@
 <template>
+<div class="image">
     <div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
     <!-- Background of PhotoSwipe. 
@@ -73,6 +74,8 @@
         </li>
       </ul>
     </div>
+</div>
+
 </div>
 </template>
 
@@ -213,14 +216,13 @@ export default {
     methods:{
          getit(i){
           this.get = i
-          this.count = i
         },
-        unget(){
+        unget(i){
           if(this.dataList == ""){
             tipBox("任务完成，已经没有图片啦")
-            this.showCount = -1
             return;
           }
+          this.count = i
           this.send()
           this.get = -1
         },
@@ -250,12 +252,14 @@ export default {
 @import "../plugins/photoswipe/dist/default-skin/default-skin.css";
 .imageRating{
     &-footer{
+      user-select: none;
       box-sizing: border-box;
       background-color: black;
-      height: 13.9vh;
+      height: 10.9vh;
       color:#fff;
-      position: relative;
-      top:813px;
+      position: fixed;
+      width: 100%;
+      bottom:0;
       z-index: 9999;
       p{
         text-align: center;
@@ -263,7 +267,7 @@ export default {
       }
       ul{
         list-style: none;
-        width: 30%;
+        width: 35%;
         margin: 0 auto;
         display:flex;
         justify-content: space-around;
@@ -283,8 +287,11 @@ export default {
       }
     }
 }
+.pswp{
+  height: 90vh;
+}
 .pswp__img{
-  padding-bottom:130px;
   overflow: hidden;
+  margin-top:3px;
 }
 </style>

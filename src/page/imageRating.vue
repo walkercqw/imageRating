@@ -83,8 +83,6 @@ created(){
                 tipBox("请求错误")
               }
             })
-
-            this.get = count
           } else {
             tipBox("打分失败")
           } 
