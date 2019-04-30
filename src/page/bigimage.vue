@@ -66,7 +66,7 @@
     <div class="imageRating-footer">
       <p>分值可选</p>
       <ul>
-        <li v-for="(item,i) in countList" :key="item" 
+        <li v-for="(item,i) in countList" :key="i" 
         @mousedown="getit(i)"
         @mouseup="unget(i)" 
         :class="{'active':i == get}">
@@ -93,7 +93,7 @@ export default {
             pswpElement:'',
             options:{},
             gallery:"",
-            countList:[0,1,2,3,4,5,6,7,8,9],
+            countList:["badBlur","goodBlur","noBlur"],
             get:-1,
             count:0,
             firstSend:true,
@@ -137,48 +137,48 @@ export default {
                 this.get = 2
                 this.send()
                 break;
-              case 51:
-              case 99:
-                this.count = 3
-                this.get = 3
-                this.send()
-                break;
-              case 52:
-              case 100:
-                this.count = 4
-                this.get = 4
-                this.send()
-                break;
-              case 53:
-              case 101:
-                this.count = 5
-                this.get = 5
-                this.send()
-                break;
-              case 54:
-              case 102: 
-                this.count = 6
-                this.get = 6
-                this.send()
-                break;
-              case 55:
-              case 103: 
-                this.count = 7
-                this.get = 7
-                this.send()
-                break;
-              case 56:
-              case 104:
-                this.count = 8
-                this.get = 8
-                this.send()
-                break;
-              case 57:
-              case 105:
-                this.count = 9
-                this.get = 9
-                this.send()
-                break; 
+              // case 51:
+              // case 99:
+              //   this.count = 3
+              //   this.get = 3
+              //   this.send()
+              //   break;
+              // case 52:
+              // case 100:
+              //   this.count = 4
+              //   this.get = 4
+              //   this.send()
+              //   break;
+              // case 53:
+              // case 101:
+              //   this.count = 5
+              //   this.get = 5
+              //   this.send()
+              //   break;
+              // case 54:
+              // case 102: 
+              //   this.count = 6
+              //   this.get = 6
+              //   this.send()
+              //   break;
+              // case 55:
+              // case 103: 
+              //   this.count = 7
+              //   this.get = 7
+              //   this.send()
+              //   break;
+              // case 56:
+              // case 104:
+              //   this.count = 8
+              //   this.get = 8
+              //   this.send()
+              //   break;
+              // case 57:
+              // case 105:
+              //   this.count = 9
+              //   this.get = 9
+              //   this.send()
+                // break; 
             }
         };
         this.data = this.dataList[0]
@@ -274,7 +274,7 @@ export default {
             background-color: #1e76e2;
           }
         li{
-          width: 50px;
+          width: 100px;
           height: 50px;
           border:1px solid #fff;
           text-align: center;

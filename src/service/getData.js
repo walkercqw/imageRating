@@ -1,6 +1,6 @@
 import axios from "axios"
 import Qs from "qs"
-axios.defaults.baseURL = 'http://121.196.245.242/api';
+axios.defaults.baseURL = 'http://121.196.245.242:6865/api';
 axios.interceptors.request.use(function (config) {
     config.data = Qs.stringify(config.data)
     let token = localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")).token:''

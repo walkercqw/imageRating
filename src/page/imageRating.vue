@@ -33,9 +33,9 @@ export default {
         {}
       ],
       photo:{},
-      countList:[0,1,2,3,4,5,6,7,8,9],
       get:-1,
-      open:false
+      open:false,
+      num:1
     };
   },
 created(){
@@ -51,14 +51,20 @@ created(){
   },
   methods:{
     getImage(){
-      getImageList(1).then(res => {
+      getImageList(this.num).then(res => {
         if(res.data.status == 200){
           this.total = res.data.data.total
           this.showCount = 0
           this.photo = res.data.data
-          this.dataList[0].h = this.photo[0].h
-          this.dataList[0].w = this.photo[0].w
-          this.dataList[0].src = this.photo[0].src
+          if(this.num == 1){
+            this.dataList[0].h = this.photo[0].h
+            this.dataList[0].w = this.photo[0].w
+            this.dataList[0].src = this.photo[0].src
+          } else {
+            this.dataList[0].h = this.photo[this.num - 1].h
+            this.dataList[0].w = this.photo[this.num - 1].w
+            this.dataList[0].src = this.photo[this.num - 1].src
+          }
           this.open = true 
         } else if(res.data.status == 456){
             alert('任务完成，没有图片啦')
@@ -75,11 +81,14 @@ created(){
     send(pid,count,isBeforeRetouch,img_number_id){
         sendScore(pid,count,isBeforeRetouch,img_number_id).then(res => {
           this.open = false
-          if(res.status == 200){
+          if(res.data.status == 200){
             tipBox(`打分成功，当前分数为${count}`)
+            this.num = 1
             this.getImage()
           } else {
-            tipBox("打分失败,请联系管理员")
+            tipBox(`${res.data.msg}`)
+            this.num++
+            this.getImage()
           } 
         })
     }
