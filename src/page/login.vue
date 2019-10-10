@@ -37,6 +37,10 @@ export default {
         alert('请输入用户名和密码')
         return;
       }
+      let token = localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")).token:''
+      if(token){
+        localStorage.removeItem("user")
+      }
       if(this.isAutoLogin){
         localStorage.setItem("userInfo",JSON.stringify({name:this.userName,pwd:this.pwd}))
       }
